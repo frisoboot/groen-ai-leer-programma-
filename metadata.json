@@ -1,0 +1,5 @@
+{
+  "name": "VWO ExamenBuddy AI",
+  "description": "Een intelligente studiehulp voor VWO 5 en 6 leerlingen om te oefenen voor eindexamens met behulp van Google Gemini AI.",
+  "requestFramePermissions": []
+}
