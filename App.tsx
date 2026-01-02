@@ -25,6 +25,11 @@ const App: React.FC = () => {
     }
   }, []);
 
+  // Reset scroll position when mode or subject changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeSubject, activeMode]);
+
   const handleProfileComplete = (profile: UserProfile) => {
     setUserProfile(profile);
     localStorage.setItem('exam_buddy_profile', JSON.stringify(profile));
@@ -51,6 +56,11 @@ const App: React.FC = () => {
     setActiveMode(null);
   };
 
+  const handleGoHome = () => {
+    setActiveSubject(null);
+    setActiveMode(null);
+  };
+
   // If no profile, show Onboarding
   if (!userProfile) {
     return <Onboarding onComplete={handleProfileComplete} />;
@@ -58,15 +68,38 @@ const App: React.FC = () => {
 
   // Render Logic
   if (activeSubject && activeMode === AppMode.CHAT) {
-    return <ChatInterface subject={activeSubject} profile={userProfile} onBack={handleBackToModeSelect} />;
+    return (
+        <ChatInterface 
+            subject={activeSubject} 
+            profile={userProfile} 
+            onBack={handleBackToModeSelect} 
+            onHome={handleGoHome}
+        />
+    );
   }
 
-  if (activeSubject && activeMode === AppMode.PRACTICE) {
-    return <PracticeInterface subject={activeSubject} profile={userProfile} onBack={handleBackToModeSelect} />;
+  // Handle both PRACTICE and EXAM modes using PracticeInterface
+  if (activeSubject && (activeMode === AppMode.PRACTICE || activeMode === AppMode.EXAM)) {
+    return (
+        <PracticeInterface 
+            subject={activeSubject} 
+            profile={userProfile} 
+            onBack={handleBackToModeSelect} 
+            onHome={handleGoHome}
+            isExamMode={activeMode === AppMode.EXAM}
+        />
+    );
   }
 
   if (activeSubject && activeMode === AppMode.FLASHCARDS) {
-    return <FlashcardInterface subject={activeSubject} profile={userProfile} onBack={handleBackToModeSelect} />;
+    return (
+        <FlashcardInterface 
+            subject={activeSubject} 
+            profile={userProfile} 
+            onBack={handleBackToModeSelect} 
+            onHome={handleGoHome}
+        />
+    );
   }
 
   if (activeSubject) {

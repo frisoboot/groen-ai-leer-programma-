@@ -19,9 +19,9 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
 
   const getAvailableYears = (lvl: EducationLevel) => {
     switch (lvl) {
-      case 'vmbo-tl': return [1, 2, 3, 4];
-      case 'havo': return [1, 2, 3, 4, 5];
-      case 'vwo': return [1, 2, 3, 4, 5, 6];
+      case 'vmbo-tl': return [4]; // Alleen examenjaar
+      case 'havo': return [4, 5]; // Bovenbouw
+      case 'vwo': return [4, 5, 6]; // Tweede fase
       default: return [];
     }
   };

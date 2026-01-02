@@ -6,7 +6,9 @@ export enum Role {
 export enum AppMode {
   CHAT = 'chat',
   PRACTICE = 'practice',
+  EXAM = 'exam',
   FLASHCARDS = 'flashcards',
+  SYLLABUS = 'syllabus',
 }
 
 export type EducationLevel = 'vmbo-tl' | 'havo' | 'vwo';
@@ -33,6 +35,7 @@ export interface Subject {
   color: string;
   description: string;
   promptContext: string;
+  examDomains: string[]; // Added official curriculum domains
 }
 
 export interface ChatState {
@@ -42,25 +45,34 @@ export interface ChatState {
 }
 
 // Practice Mode Types
-export interface QuizQuestion {
-  text: string;
-  topic: string;
-  difficulty: 'makkelijk' | 'gemiddeld' | 'moeilijk';
-}
-
 export interface QuizFeedback {
   isCorrect: boolean;
-  score: number; // 0-10
+  score: number;
   explanation: string;
   modelAnswer: string;
 }
 
+export interface Attachment {
+  type: 'text' | 'image';
+  title?: string;
+  content: string; // URL/Base64 for image, or text content for text type
+}
+
+export interface QuizQuestion {
+  text: string;
+  topic: string;
+  difficulty: 'makkelijk' | 'gemiddeld' | 'moeilijk';
+  source?: string; // Added source for exam year/period
+  hint: string; // Added hint field
+  attachment?: Attachment | null;
+}
+
 export interface PracticeTurn {
-  feedback?: QuizFeedback; // Optional because the first turn has no feedback
+  feedback?: QuizFeedback | null;
   nextQuestion: QuizQuestion;
 }
 
-// Flashcard Types
+// Flashcard Mode Types
 export interface Flashcard {
   front: string;
   back: string;
